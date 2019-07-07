@@ -3,17 +3,6 @@ import numpy as np
 import cv2
 
 
-
-# def draw_lines(img, lines, color=[255, 0, 0], thickness=3):
-# #     import pdb; pdb.set_trace()
-#     for line in lines:
-#         if np.all(line == 0): break
-#         else:
-#             for x1, y1, x2, y2 in line:
-#                 cv2.line(img, (x1, y1), (x2, y2), color, thickness)          
-
-
-
 def draw_lines_from_points(img, pts, color=[255, 0, 0], 
                            thickness = 3):
     pts = pts.reshape((4,2))
@@ -50,10 +39,6 @@ def show_imgs(imgs, cmaps, ttls, nrows=3, ncols=2, width=10, height=5, res=100):
     for i in range(nrows * ncols):
         ax[i].axis('off')
     
-#     if save==True:
-#         fig.savefig(path)
-#     fig.savefig('output_images/test.jpg')
-#     return fig
     return None
 
 

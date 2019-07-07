@@ -2,9 +2,9 @@
 ---
 
 
-# Advanced Lane Finding
+## Advanced Lane Finding - Writeup
 
-## Udacity - Self Driving Car Nanodegree Project
+### Udacity - Self Driving Car Nanodegree Project
 
 
 ---
@@ -116,17 +116,17 @@ To identify lane-line pixels, two different methods are used. First, a sliding w
 
 #### Sliding window search
 
-The `sliding_window()` function is defined in *code cell 30*. The method starts with calculating a histgram, which sums up the number of pixels in every column for the lower half of the binary image. An example histogram is shown below. After splitting the histogramm into left and right for both lines (*code cell 30, line 9*), its left and right maximum values are used as starting points for the sliding windows (*code cell 30, line 11-14*), since it is likely to find the lines in this area. The image is searched from bottom to top with the sliding windows, which are adapted horizontally if the mean values of the detected pixels change (*code cell 30, line 44-52*). Since the method is implemented with a for loop, it is relatively inefficient. An example image with the line pixels marked in red and blue is shown below the histogram.
+The `sliding_window()` function is defined in *code cell 28*. The method starts with calculating a histgram, which sums up the number of pixels in every column for the lower half of the binary image. An example histogram is shown below. After splitting the histogramm into left and right for both lines (*code cell 28, line 10*), its left and right maximum values are used as starting points for the sliding windows (*code cell 28, line 12-15*), since it is likely to find the lines in this area. The image is searched from bottom to top with the sliding windows, which are adapted horizontally if the mean values of the detected pixels change (*code cell 28, line 46-54*). Since the method is implemented with a for loop, it is relatively inefficient. An example image with the line pixels marked in red and blue is shown below the histogram.
 
 
 #### Proximity search
 
-To avoid the relatively slow sliding window search, `proximity_search()` is applied if possible, which is defined in *code cell 37*. The use of the function requires, that a line was found and successfully fit in the frame before, since the fitted polynomial is used for this method. It searches the lines only in the area of the fitted polynomial from the previous frame and returns its pixel values.
+To avoid the relatively slow sliding window search, `proximity_search()` is applied if possible, which is defined in *code cell 35*. The use of the function requires, that a line was found and successfully fit in the frame before, since the fitted polynomial is used for this method. It searches the lines only in the area of the fitted polynomial from the previous frame and returns its pixel values.
 
 #### Polynomial fit
 
-To fit a polynomial, the function `fit_poly()` is defined (*code cell 34*). It basically uses the `np.polyfit()` function to fit a 2nd order polynomial and return its coefficients (*code cell 34, line 6*). Since the lane-lines are assumed to be vertical in the transformed images, x and y are switched here.
-After creating the y and x values of the polynomial (*line 9-10*), the x values are limited in case of a fit that exceeds the image bounds (*line 13-14*). An example of the fitted polynomial lines is shown below the histogram and the marked pixel image.
+To fit a polynomial, the function `fit_poly()` is defined (*code cell 32*). It basically uses the `np.polyfit()` function to fit a 2nd order polynomial and return its coefficients (*code cell 32, line 7*). Since the lane-lines are assumed to be vertical in the transformed images, x and y are switched here.
+After creating the y and x values of the polynomial (*line 10-11*), the x values are limited in case of a fit that exceeds the image bounds (*line 14-15*). An example of the fitted polynomial lines is shown below the histogram and the marked pixel image.
 
 ![png](./output_images/05_hist.png)
 
@@ -145,17 +145,17 @@ $R_{curve} = \frac{\big[1 + (\frac{dy}{dx})²\big]^{3/2}}{\lvert\frac{d²y}{dx²
 Assuming the 2nd order polynomial curve $f(y) = Ay² + By + C$ and their derivatives $f'(y) = 2Ay + B$ and $f''(y) = 2A$, this leads to
 
 $R_{curve} = \frac{\big[1 + (2 Ay + B)²\big]^{3/2}}{\lvert2A\rvert}$.
-This formular is used in the `get_radius()` function *code cell 39, line 6-8*. The radius is calculated at the bottom of the image, since this is the closest approximation to the current position of the car.
+This formular is used in the `get_radius()` function *code cell 37, line 7-9*. The radius is calculated at the bottom of the image, since this is the closest approximation to the current position of the car.
 
-The distance to the lane center results from the difference between the calculated lane center and the middle of the image, which can be seen in function `get_offset()` (*code cell 40, line 4-8*). By definition, a negative offset means a car position left from the lane center.
+The distance to the lane center results from the difference between the calculated lane center and the middle of the image, which can be seen in function `get_offset()` (*code cell 38). By definition, a negative offset means a car position left from the lane center.
 
-For converting the measures from pixel to real world space, conversion coefficients for x and y directions are required (`xm_per_pix` and `ym_per_pix` in *code cell 38, line 8 and 15*). Their values have been determined based on the warped image above, assuming a lane width of 3.7 meters and a dashed line length of 3 meters.
+For converting the measures from pixel to real world space, conversion coefficients for x and y directions are required (`xm_per_pix` and `ym_per_pix` in *code cell 36, line 8 and 15*). Their values have been determined based on the warped image above, assuming a lane width of 3.7 meters and a dashed line length of 3 meters.
 
 
 
 ### Example image the result plotted back down onto the road
 
-The result was plotting on the road in *code cell 49, line 43-47*.
+The result is plotted on the road in *code cell 47, line 35-39*.
 
 ![png](./output_images/08_overlay.png)
 
