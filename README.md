@@ -2,7 +2,7 @@
 ---
 
 
-# Writeup: Advanced Lane Finding
+# Advanced Lane Finding
 
 ## Udacity - Self Driving Car Nanodegree Project
 
@@ -20,6 +20,9 @@
 * Creating an overlay with the detected lane
 
 ---
+
+If not otherwise noted, the referenced code elements can be found in the main jupyter notebook *advanced_lane_finding.ipynb*.
+
 
 #### Final result
 
@@ -39,7 +42,7 @@ The image points are determinded by the `cv2.findChessboardCorners()` (*code cel
 
 Distorted images taken with the same camera can now be corrected by using the `cv2.undistort()` function, which takes the calibration matrix and distortion coefficients as input arguments. It is used in *code cell 3, line 33*. The output is provided below.
 
-![png](01_calib_img.png)
+![png](./output_images/01_calib_img.png)
 
 
 
@@ -50,7 +53,7 @@ Distorted images taken with the same camera can now be corrected by using the `c
 
 Now that the calibration matrix and distortion coefficients are available, all images taken with the same camera can be undistorted. The result of the function `cv2.undistort()` is shown below.
 
-![png](02_dist_corr_img.png)
+![png](./output_images/02_dist_corr_img.png)
 
 
 ### Perspective transform
@@ -71,7 +74,7 @@ In case of changing source and image points before passing them to the `cv2.getP
 
 The transform is performed using the `cv2.warpPerspective()` function (*code cell 14, line 2*), which takes the image and the transformation matrix as inputs and returns the transformed ("warped") image. An example of a transformed image is shown below. Since the lane lines appear parallel on the warped image, the transform is assumed to work properly.
 
-![png](warp.png)
+![png](./output_images/03_warp.png)
 
 
 
@@ -103,11 +106,11 @@ RGB-Red **OR (** HLS-Saturation **AND** HLS-Hue **) OR** Gradient
 
 An example of the binary combined color image and gradient image is shown below.
 
-![png](04_bin_img.png)
+![png](./output_images/04_bin_img.png)
 
 
 
-### Identification of lane-line pixels polynomial fit
+### Identification of lane-line pixels and polynomial fit
 
 To identify lane-line pixels, two different methods are used. First, a sliding window approach is applied, which returns the pixel values of potential lane-lines. After fitting a polynomial and a check if the result is plausible, a more efficient proximity search around the previous fit is performed in the next frame. Both methods are described below.
 
@@ -125,11 +128,11 @@ To avoid the relatively slow sliding window search, `proximity_search()` is appl
 To fit a polynomial, the function `fit_poly()` is defined (*code cell 34*). It basically uses the `np.polyfit()` function to fit a 2nd order polynomial and return its coefficients (*code cell 34, line 6*). Since the lane-lines are assumed to be vertical in the transformed images, x and y are switched here.
 After creating the y and x values of the polynomial (*line 9-10*), the x values are limited in case of a fit that exceeds the image bounds (*line 13-14*). An example of the fitted polynomial lines is shown below the histogram and the marked pixel image.
 
-![png](05_hist.png)
+![png](./output_images/05_hist.png)
 
-![png](06_marked_pix.png)
+![png](./output_images/06_marked_pix.png)
 
-![png](07_poly_img.png)
+![png](./output_images/07_poly_img.png)
 
 
 
@@ -152,24 +155,24 @@ For converting the measures from pixel to real world space, conversion coefficie
 
 ### Example image the result plotted back down onto the road
 
-For plotting the result on the road, an overlay has been created 
+The result was plotting on the road in *code cell 49, line 43-47*.
 
-![png](08_overlay.png)
+![png](./output_images/08_overlay.png)
 
 
 ### Final video output
 
 Here is the link to the [complete video](./output_videos/project_video.mp4).
 
-The following gif shows a debug video, with the binary color image (bottom left), the binary gradient image (center left) and the combinated binary image (top left). The main image is shown bottom right with the fitted lane lines above:
-
-![final_gif](./output_videos/final_subclip_debug.gif)
-
-
 ### Discussion
 
-The algorithm fails under harder conditions, for example when there are shadows or other lines from the road parallel to the lane lines.
+The following gif shows a debug video, with the binary color image (bottom left), the binary gradient image (center left) and the combinated binary image (top left). The main image is shown bottom right with the fitted lane lines above. The complete debug video can be found [here](./output_videos/project_video_debug.mp4). It can be seen, that the polynomial fits lack accuracy when parts of the lines are not detected.
+![final_gif](./output_videos/final_subclip_debug.gif)
 
-Recent line detections are used in the current implementation for smoothing the lines. Besides the implemented sanity check, these history values could be used to check if the lines are plausible as well. Generally, the implemented sanity check could be improved to filter wrong detections.
+The algorithm may also fail under harder conditions, for example when there are shadows or other lines from the road parallel to the lane lines.
 
-For a better detection performance, the used threshold methods could be improved by other combination of colormaps and gradients and tuning the appropriate thresholds.
+Recent line detections are used in the current implementation for smoothing the lines. Besides the implemented sanity check, these history values could also be used to check if the lines are plausible. Generally, the implemented sanity check could be improved to filter false detections.
+
+Besides, the applied threshold methods could be improved by other combination of colormaps and gradients and tuning the appropriate thresholds.
+
+In general, researching for and implementing state-of-the-art methods for lane line detection would certainly help to find other ways to improve the algorithm.
