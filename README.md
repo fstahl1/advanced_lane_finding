@@ -140,14 +140,20 @@ After creating the y and x values of the polynomial (*line 10-11*), the x values
 ### Radius of lane curvature and the position of the vehicle with respect to the lane center
 
 The radius of a curve is calculated by using
-$R_{curve} = \frac{\big[1 + (\frac{dy}{dx})²\big]^{3/2}}{\lvert\frac{d²y}{dx²}\rvert}$ [\[https://www.intmath.com\]](https://www.intmath.com/applications-differentiation/8-radius-curvature.php).
+<div align="center"><img style="background: white;" src=".\readme_rendered_equations\cZwsmMtwBe.svg"></div>
 
-Assuming the 2nd order polynomial curve $f(y) = Ay² + By + C$ and their derivatives $f'(y) = 2Ay + B$ and $f''(y) = 2A$, this leads to
+[\[https://www.intmath.com\]](https://www.intmath.com/applications-differentiation/8-radius-curvature.php).
 
-$R_{curve} = \frac{\big[1 + (2 Ay + B)²\big]^{3/2}}{\lvert2A\rvert}$.
+Assuming the 2nd order polynomial curve
+<div align="center"><img style="background: white;" src=".\readme_rendered_equations\aTWwnCuQmF.svg"></div>
+and their derivatives
+<div align="center"><img style="background: white;" src=".\readme_rendered_equations\AOtzG62A7R.svg"></div>
+this leads to
+<div align="center"><img style="background: white;" src=".\readme_rendered_equations\P4d8CVPfku.svg"></div>
+
 This formular is used in the `get_radius()` function *code cell 37, line 7-9*. The radius is calculated at the bottom of the image, since this is the closest approximation to the current position of the car.
 
-The distance to the lane center results from the difference between the calculated lane center and the middle of the image, which can be seen in function `get_offset()` (*code cell 38). By definition, a negative offset means a car position left from the lane center.
+The distance to the lane center results from the difference between the calculated lane center and the middle of the image, which can be seen in function `get_offset()` (*code cell 38*). By definition, a negative offset means a car position left from the lane center.
 
 For converting the measures from pixel to real world space, conversion coefficients for x and y directions are required (`xm_per_pix` and `ym_per_pix` in *code cell 36, line 8 and 15*). Their values have been determined based on the warped image above, assuming a lane width of 3.7 meters and a dashed line length of 3 meters.
 
