@@ -61,7 +61,7 @@ Now that the calibration matrix and distortion coefficients are available, all i
 A perspective transform requires a transformation matrix which can be computed using the `cv2.getPerspectiveTransform()` function (*code cell 12, line 2*). This function takes 4 source points and 4 destination points as input and returns the transformation matrix. The source points are manually chosed based on a zoomed image:
  
 | Source points (x,y)| Destination points (x,y) |
-|: --- :|: --- :|
+|:---:|:---:|
 |  580, 460 | 290,   0 |
 |  700, 460 | 990,   0 |
 | 1100, 720 | 990, 720 |
